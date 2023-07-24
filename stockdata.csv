@@ -1,101 +1,100 @@
-name , price
-QuickBite Energy Bars , $1.99
-SpeedySnack Granola Bites , $2.49
-SwiftSips Instant Coffee , $3.29
-EasyGrab Breakfast Wraps , $2.99
-SnackDash Trail Mix , $1.79
-SwiftMunch Pretzel Sticks , $1.29
-MiniMarvel Snack Packs , $0.99
-ZipChips Potato Crisps , $1.49
-SnapPop Popcorn Cups , $0.99
-GoGo Noodle Cups , $1.59
-ChillCup Ice Cream Cones , $2.79
-ChillThirsty Juice Boxes , $1.29
-MiniMunch Mini Donuts , $1.99
-ReadyGo Microwaveable Meals , $3.49
-MunchPacks Assorted Candy , $1.19
-TastyBite Sandwich Wraps , $3.99
-GrabNGo Fresh Fruit Cups , $1.79
-EZBake Cookie Dough , $2.29
-QuickFix Pain Relievers , $4.99
-FastFuel Energy Shots , $2.99
-EasyWipe Hand Sanitizers , $1.49
-PopTop Energy Drinks , $2.49
-ChillCup Slushies , $1.99
-GoChill Ice Pops , $0.69
-SwiftSlice Deli Meats , $3.99
-SnackSack Potato Chips , $1.99
-SpeedySip Iced Tea , $1.29
-EZChew Gum Packs , $0.99
-SnackShot Pudding Cups , $1.19
-MunchBox Snack Mix , $1.49
-SwiftBrew Instant Tea , $2.29
-QuickZap Frozen Burritos , $2.79
-ReadyHeat Hot Pockets , $1.99
-EZCheese Cheese Sticks , $1.49
-MunchBites Cheese Balls , $0.99
-EasyDip Veggie Cups , $1.79
-SpeedyBrew Coffee Pods , $4.49
-SnackStix Beef Jerky , $3.99
-GoChomp Protein Bars , $2.99
-QuickThaw Frozen Meals , $3.49
-SwiftChill Ice Cubes , $0.99
-EasyPour Milk Jugs , $2.29
-EZBrew Iced Coffee , $2.99
-MiniMelt Ice Cream Cups , $1.49
-SnackStack Cookie Packs , $1.79
-MunchBox Assorted Nuts , $2.49
-PopTop Fruit Cups , $1.29
-GoNosh Pudding Cups , $1.19
-TastyTreat Gummy Bears , $1.59
-EZMix Trail Mix , $1.99
-ChillShake Milkshakes , $2.79
-SwiftSqueeze Fruit Pouches , $0.99
-GrabNGo Fresh Salads , $3.99
-QuickFix Band,Aids , $2.99
-SpeedySip Electrolyte Drinks , $1.49
-SnackShot Applesauce Cups , $0.99
-EZChomp Rice Cakes , $1.29
-ChillCup Smoothies , $2.49
-MunchPacks Chocolate Bars , $1.49
-GoTreat Yogurt Cups , $1.79
-ReadyRoll Sushi Rolls , $4.99
-EZBrew Instant Mocha , $3.29
-SwiftSteam Microwaveable Rice , $1.99
-QuickDip Hummus Cups , $1.29
-SnackStack Crackers Packs , $1.49
-MunchBox Veggie Chips , $1.79
-PopTop Fruit Snacks , $1.19
-GoNosh Gelatin Cups , $1.59
-TastyTreat Licorice Bites , $0.99
-EZMix Party Mix , $2.49
-ChillShake Protein Shakes , $3.99
-SwiftSqueeze Applesauce Pouches , $1.29
-GrabNGo Fresh Wraps , $4.49
-QuickFix Adhesive Bandages , $2.49
-SpeedySip Sports Drinks , $1.79
-SnackShot Jelly Cups , $0.99
-EZChomp Chewy Bars , $1.29
-ChillCup Slushie Mix , $1.99
-MunchPacks Chocolate Bars , $1.49
-GoTreat Fruit Yogurt , $1.79
-ReadyRoll Spring Rolls , $2.99
-EZBrew Instant Cappuccino , $3.29
-SwiftSteam Microwaveable Veggies , $1.99
-QuickDip Ranch Dip Cups , $1.29
-SnackStack Cheese Packs , $1.49
-MunchBox Dried Fruits , $2.49
-PopTop Fruit Gels , $1.19
-GoNosh Pudding Cups , $1.19
-TastyTreat Gummy Worms , $1.59
-EZMix Snack Mix , $1.99
-ChillShake Milkshakes , $2.79
-SwiftSqueeze Fruit Pouches , $0.99
-GrabNGo Fresh Salads , $3.99
-QuickFix Band,Aids , $2.99
-SpeedySip Sports Drinks , $1.49
-SnackShot Jelly Cups , $0.99
-EZChomp Chewy Bars , $1.29
-ChillCup Slushie Mix , $1.99
-MunchPacks Chocolate Bars , $1.49
-GoTreat Yogurt Cups , $1.79
+name,priceQuickBite Energy Bars,1.99
+SpeedySnack Granola Bites,2.49
+SwiftSips Instant Coffee,3.29
+EasyGrab Breakfast Wraps,2.99
+SnackDash Trail Mix,1.79
+SwiftMunch Pretzel Sticks,1.29
+MiniMarvel Snack Packs,0.99
+ZipChips Potato Crisps,1.49
+SnapPop Popcorn Cups,0.99
+GoGo Noodle Cups,1.59
+ChillCup Ice Cream Cones,2.79
+ChillThirsty Juice Boxes,1.29
+MiniMunch Mini Donuts,1.99
+ReadyGo Microwaveable Meals,3.49
+MunchPacks Assorted Candy,1.19
+TastyBite Sandwich Wraps,3.99
+GrabNGo Fresh Fruit Cups,1.79
+EZBake Cookie Dough,2.29
+QuickFix Pain Relievers,4.99
+FastFuel Energy Shots,2.99
+EasyWipe Hand Sanitizers,1.49
+PopTop Energy Drinks,2.49
+ChillCup Slushies,1.99
+GoChill Ice Pops,0.69
+SwiftSlice Deli Meats,3.99
+SnackSack Potato Chips,1.99
+SpeedySip Iced Tea,1.29
+EZChew Gum Packs,0.99
+SnackShot Pudding Cups,1.19
+MunchBox Snack Mix,1.49
+SwiftBrew Instant Tea,2.29
+QuickZap Frozen Burritos,2.79
+ReadyHeat Hot Pockets,1.99
+EZCheese Cheese Sticks,1.49
+MunchBites Cheese Balls,0.99
+EasyDip Veggie Cups,1.79
+SpeedyBrew Coffee Pods,4.49
+SnackStix Beef Jerky,3.99
+GoChomp Protein Bars,2.99
+QuickThaw Frozen Meals,3.49
+SwiftChill Ice Cubes,0.99
+EasyPour Milk Jugs,2.29
+EZBrew Iced Coffee,2.99
+MiniMelt Ice Cream Cups,1.49
+SnackStack Cookie Packs,1.79
+MunchBox Assorted Nuts,2.49
+PopTop Fruit Cups,1.29
+GoNosh Pudding Cups,1.19
+TastyTreat Gummy Bears,1.59
+EZMix Trail Mix,1.99
+ChillShake Milkshakes,2.79
+SwiftSqueeze Fruit Pouches,0.99
+GrabNGo Fresh Salads,3.99
+QuickFix Band,ds 
+SpeedySip Electrolyte Drinks,1.49
+SnackShot Applesauce Cups,0.99
+EZChomp Rice Cakes,1.29
+ChillCup Smoothies,2.49
+MunchPacks Chocolate Bars,1.49
+GoTreat Yogurt Cups,1.79
+ReadyRoll Sushi Rolls,4.99
+EZBrew Instant Mocha,3.29
+SwiftSteam Microwaveable Rice,1.99
+QuickDip Hummus Cups,1.29
+SnackStack Crackers Packs,1.49
+MunchBox Veggie Chips,1.79
+PopTop Fruit Snacks,1.19
+GoNosh Gelatin Cups,1.59
+TastyTreat Licorice Bites,0.99
+EZMix Party Mix,2.49
+ChillShake Protein Shakes,3.99
+SwiftSqueeze Applesauce Pouches,1.29
+GrabNGo Fresh Wraps,4.49
+QuickFix Adhesive Bandages,2.49
+SpeedySip Sports Drinks,1.79
+SnackShot Jelly Cups,0.99
+EZChomp Chewy Bars,1.29
+ChillCup Slushie Mix,1.99
+MunchPacks Chocolate Bars,1.49
+GoTreat Fruit Yogurt,1.79
+ReadyRoll Spring Rolls,2.99
+EZBrew Instant Cappuccino,3.29
+SwiftSteam Microwaveable Veggies,1.99
+QuickDip Ranch Dip Cups,1.29
+SnackStack Cheese Packs,1.49
+MunchBox Dried Fruits,2.49
+PopTop Fruit Gels,1.19
+GoNosh Pudding Cups,1.19
+TastyTreat Gummy Worms,1.59
+EZMix Snack Mix,1.99
+ChillShake Milkshakes,2.79
+SwiftSqueeze Fruit Pouches,0.99
+GrabNGo Fresh Salads,3.99
+QuickFix Band,ds 
+SpeedySip Sports Drinks,1.49
+SnackShot Jelly Cups,0.99
+EZChomp Chewy Bars,1.29
+ChillCup Slushie Mix,1.99
+MunchPacks Chocolate Bars,1.49
+GoTreat Yogurt Cups,1.79
