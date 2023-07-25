@@ -1,6 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
 import re
+import json
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -35,6 +36,10 @@ def print_main():
 *----------------*
 """
 )
+
+# Load sales history data
+with open('sales_history.json', 'r') as f:
+    sales_history = json.load(f)
 
 class Product:
 
