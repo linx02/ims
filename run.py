@@ -14,8 +14,53 @@ SHEET = GSPREAD_CLIENT.open('stock')
 
 stock = SHEET.worksheet('full_stock')
 
-def main():
+def print_main():
+    print(
+"""
+*----------------*
+|   YourStore    |
+|     IMS        |
+*----------------*
+| Commands:      |
+|                |
+| updatesales    |
+| updateinv      |
+| priceof [GTIN] |
+| instock [GTIN] |
+| dataof [GTIN]  |
+| scrap          |
+| help [COMMAND] |
+*----------------*
+"""
+)
+
+def updatesales():
     pass
 
-data = stock.get_all_values()
-print(data)
+def updateinv():
+    pass
+
+def priceof(gtin):
+    pass
+
+def instock(gtin):
+    pass
+
+def dataof(gtin):
+    pass
+
+def scrap():
+    pass
+
+def help(command):
+    pass
+
+def execute_cmd(command):
+    pass
+
+def main():
+    print_main()
+    command = input('YourStore > ')
+    execute_cmd(command)
+
+main()
