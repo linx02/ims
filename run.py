@@ -78,10 +78,11 @@ class Product:
             date_list = [current_date - timedelta(days=i) for i in range(time_period)]
 
         else:
-            start_datetime = datetime.strptime(time_period[0], '%Y-%m-%d')
-            end_datetime = datetime.strptime(time_period[1], '%Y-%m-%d')
+            start_datetime = time_period[0]
+            end_datetime = time_period[1]
 
             date_list = [start_datetime + timedelta(days=i) for i in range((end_datetime - start_datetime).days + 1)]
+            print(date_list)
 
         sold_items = []
 
@@ -97,6 +98,23 @@ class Product:
             total += item[1]
         
         return total
+    
+    def compare_sales(self, time_period):
+        current_date = datetime.now().date()
+        delta = timedelta(days=time_period)
+        last_datetime = datetime(current_date.year - 1, current_date.month, current_date.day)
+        last_datetime_start = last_datetime - delta
+        last_date = last_datetime.date()
+        last_date_start = last_datetime_start.date()
+
+        current_date_str = current_date.strftime('%Y-%m-%d')
+        last_date_str = last_date.strftime('%Y-%m-%d')
+        last_date_start_str = last_date_start.strftime('%Y-%m-%d')
+
+        last_sales = self.sold_items(time_period=[last_date_start, last_date])
+        current_sales = self.sold_items(time_period)
+
+        return current_sales - last_sales
 
 
 def updatesales():
@@ -131,9 +149,9 @@ Sold(7 days): {product.sold_items(7)}
 -------------
 Sold(30 days): {product.sold_items(30)}
 --------------
-+ / - (7 days):
++ / - (7 days): {product.compare_sales(7)}
 ---------------
-+ / - (30 days):
++ / - (30 days): {product.compare_sales(30)}
 ----------------
 Scrap(7 days):
 --------------
