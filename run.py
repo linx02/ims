@@ -72,21 +72,31 @@ class Product:
         
         return f'{self.name}: {data}'
     
-    def compare_sales(self, days_num):
-        current_date = datetime.now().date()
-        date_list = [current_date - timedelta(days=i) for i in range(days_num)]
+    def sold_items(self, time_period=None):
+        if type(time_period) == int:
+            current_date = datetime.now().date()
+            date_list = [current_date - timedelta(days=i) for i in range(time_period)]
+
+        else:
+            start_datetime = datetime.strptime(time_period[0], '%Y-%m-%d')
+            end_datetime = datetime.strptime(time_period[1], '%Y-%m-%d')
+
+            date_list = [start_datetime + timedelta(days=i) for i in range((end_datetime - start_datetime).days + 1)]
 
         sold_items = []
 
         for date in date_list:
             for item in sales_history:
-                if item["date"] == date:
+                if item["date"] == str(date):
                     for product in item["sold"]:
-                        if product[0] == self.name:
+                        if product[0] == self.gtin:
                             sold_items.append(product)
         
-        return(sold_items)
-
+        total = 0
+        for item in sold_items:
+            total += item[1]
+        
+        return total
 
 
 def updatesales():
@@ -117,12 +127,10 @@ Supplier: {product.supplier}
 ---------
 Qty in stock: {product.qty}
 -------------
-Sold(7 days): {product.compare_sales(30)}
+Sold(7 days): {product.sold_items(7)}
 -------------
-Sold(30 days):
+Sold(30 days): {product.sold_items(30)}
 --------------
-Sold(365 days):
----------------
 + / - (7 days):
 ---------------
 + / - (30 days):
