@@ -1,27 +1,21 @@
-import csv
-import random
+import gspread
+from google.oauth2.service_account import Credentials
 
-def add_random_integer(input_file, output_file):
-    # Read the data from the input CSV file and store it in a list
-    data_list = []
-    with open(input_file, "r") as file:
-        csv_reader = csv.reader(file)
-        header = next(csv_reader)  # Skip the header row
-        for row in csv_reader:
-            data_list.append(row)
+SCOPE = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive.file",
+    "https://www.googleapis.com/auth/drive"
+]
 
-    # Add a random integer between 1 and 100 as the last item of each row
-    for row in data_list:
-        random_int = random.randint(1, 100)
-        row.append(random_int)
+CREDS = Credentials.from_service_account_file('creds.json')
+SCOPED_CREDS = CREDS.with_scopes(SCOPE)
+GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
+SHEET = GSPREAD_CLIENT.open('stock')
 
-    # Write the modified data to a new CSV file
-    with open(output_file, "w", newline="") as file:
-        csv_writer = csv.writer(file)
-        csv_writer.writerow(header)  # Write the header row
-        csv_writer.writerows(data_list)
+stock = SHEET.worksheet('full_stock')
 
-# Example usage:
-input_csv_file = "stockdata.csv"
-output_csv_file = "new.csv"
-add_random_integer(input_csv_file, output_csv_file)
+def main():
+    pass
+
+data = stock.get_all_values()
+print(data)
