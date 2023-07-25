@@ -36,6 +36,34 @@ def print_main():
 """
 )
 
+class Product:
+
+    def __init__(self, gtin):
+        global stock_data
+        for product in stock_data:
+            if gtin == product[-1]:
+                self.name = product[0]
+                self.price = product[1]
+                self.supplier_price = product[2]
+                self.supplier = product[3]
+                self.qty = product[4]
+                self.gtin = gtin
+    
+    def get(self, info):
+        data = None
+        if info == 'price':
+            data = f'${self.price[1:]}'
+        if info == 'supplier_price':
+            data = f'${self.supplier_price[1:]}'
+        if info == 'supplier':
+            data = f'${self.supplier}'
+        if info == 'qty':
+            data = f'${self.qty}'
+        if info == 'gtin':
+            data = f'${self.gtin}'
+        
+        return f'{self.name}: {data}'
+
 def updatesales():
     pass
 
@@ -43,16 +71,43 @@ def updateinv():
     pass
 
 def priceof(gtin):
-    for product in stock_data:
-        if gtin == product[-1]:
-            return f'{product[0]}: ${product[1][1:]}'
-    return f'No match for GTIN: {gtin}'
+    product = Product(gtin)
+    print(product.get('price'))
 
 def instock(gtin):
-    pass
+    product = Product(gtin)
+    print(product.get('qty'))
 
 def dataof(gtin):
-    pass
+    product = Product(gtin)
+    print(
+f"""
+Name: {product.name}
+-----
+Price: {product.price}
+------
+SupplierPrice: {product.supplier_price}
+--------------
+Supplier: {product.supplier}
+---------
+Qty in stock: {product.qty}
+-------------
+Sold(7 days):
+-------------
+Sold(30 days):
+--------------
+Sold(365 days):
+---------------
++ / - (7 days):
+---------------
++ / - (30 days):
+----------------
+Scrap(7 days):
+--------------
+Scrap(30 days):
+---------------
+"""
+    )
 
 def scrap():
     pass
@@ -69,11 +124,11 @@ def execute_cmd(command):
     if 'updateinv' in command:
         pass
     if 'priceof' in command:
-        print(priceof(gtin))
+        priceof(gtin)
     if 'instock' in command:
-        pass
+        instock(gtin)
     if 'dataof' in command:
-        pass
+        dataof(gtin)
     if 'scrap' in command:
         pass
     if 'help' in command:
