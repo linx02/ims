@@ -64,11 +64,11 @@ class Product:
         if info == 'supplier_price':
             data = f'${self.supplier_price[1:]}'
         if info == 'supplier':
-            data = f'${self.supplier}'
+            data = f'{self.supplier}'
         if info == 'qty':
-            data = f'${self.qty}'
+            data = f'{self.qty}'
         if info == 'gtin':
-            data = f'${self.gtin}'
+            data = f'{self.gtin}'
         
         return f'{self.name}: {data}'
     
@@ -82,7 +82,6 @@ class Product:
             end_datetime = time_period[1]
 
             date_list = [start_datetime + timedelta(days=i) for i in range((end_datetime - start_datetime).days + 1)]
-            print(date_list)
 
         sold_items = []
 
@@ -153,10 +152,6 @@ Sold(30 days): {product.sold_items(30)}
 ---------------
 + / - (30 days): {product.compare_sales(30)}
 ----------------
-Scrap(7 days):
---------------
-Scrap(30 days):
----------------
 """
     )
 
@@ -168,24 +163,30 @@ def help(command):
 
 def execute_cmd(command):
     pattern = r"\b\d+\b"
-    gtin = re.search(pattern, command).group()
+    gtin = lambda: re.search(pattern, command).group()
 
-    if 'updatesales' in command:
-        pass
-    if 'updateinv' in command:
-        pass
-    if 'priceof' in command:
-        priceof(gtin)
-    if 'instock' in command:
-        instock(gtin)
-    if 'dataof' in command:
-        dataof(gtin)
-    if 'scrap' in command:
-        pass
-    if 'help' in command:
-        pass
-    if 'exit' in command:
-        exit()
+    try:
+        if 'updatesales' in command:
+            pass
+        elif 'updateinv' in command:
+            pass
+        elif 'priceof' in command:
+            priceof(gtin())
+        elif 'instock' in command:
+            instock(gtin())
+        elif 'dataof' in command:
+            dataof(gtin())
+        elif 'scrap' in command:
+            pass
+        elif 'help' in command:
+            pass
+        elif 'exit' in command:
+            exit()
+        else:
+            print(f'No such command: "{command}"')
+    except Exception as e:
+        print(f'Invalid usage of ({command}): {e}\n')
+        print(f'Please type "help {command}" to see correct usage.\n')
 
 def main():
     print_main()
