@@ -1,5 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
+import re
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -13,6 +14,7 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('stock')
 
 stock = SHEET.worksheet('full_stock')
+stock_data = stock.get_all_values()
 
 def print_main():
     print(
@@ -41,7 +43,10 @@ def updateinv():
     pass
 
 def priceof(gtin):
-    pass
+    for product in stock_data:
+        if gtin == product[-1]:
+            return f'{product[0]}: ${product[1][1:]}'
+    return f'No match for GTIN: {gtin}'
 
 def instock(gtin):
     pass
@@ -56,11 +61,30 @@ def help(command):
     pass
 
 def execute_cmd(command):
-    pass
+    pattern = r"\b\d+\b"
+    gtin = re.search(pattern, command).group()
+
+    if 'updatesales' in command:
+        pass
+    if 'updateinv' in command:
+        pass
+    if 'priceof' in command:
+        print(priceof(gtin))
+    if 'instock' in command:
+        pass
+    if 'dataof' in command:
+        pass
+    if 'scrap' in command:
+        pass
+    if 'help' in command:
+        pass
+    if 'exit' in command:
+        exit()
 
 def main():
     print_main()
-    command = input('YourStore > ')
-    execute_cmd(command)
+    while True:
+        command = input('YourStore > ')
+        execute_cmd(command)
 
 main()
