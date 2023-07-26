@@ -72,7 +72,7 @@ class Product:
         
         return f'{self.name}: {data}'
     
-    def sold_items(self, time_period=None):
+    def sold_scrap_items(self, time_period=None):
         if type(time_period) == int:
             current_date = datetime.now().date()
             date_list = [current_date - timedelta(days=i) for i in range(time_period)]
@@ -84,19 +84,26 @@ class Product:
             date_list = [start_datetime + timedelta(days=i) for i in range((end_datetime - start_datetime).days + 1)]
 
         sold_items = []
+        scrap_items = []
 
         for date in date_list:
             for item in sales_history:
                 if item["date"] == str(date):
-                    for product in item["sold"]:
-                        if product[0] == self.gtin:
-                            sold_items.append(product)
+                    for sold, scrap in zip(item["sold"], item["scrap"]):
+                        if sold[0] == self.gtin:
+                            sold_items.append(sold)
+                        if scrap[0] == self.gtin:
+                            scrap_items.append(scrap)
         
-        total = 0
+        total_sold = 0
         for item in sold_items:
-            total += item[1]
+            total_sold += item[1]
         
-        return total
+        total_scrap = 0
+        for item in scrap_items:
+            total_scrap += item[1]
+        
+        return (total_sold, total_scrap)
     
     def compare_sales(self, time_period):
         current_date = datetime.now().date()
@@ -106,12 +113,8 @@ class Product:
         last_date = last_datetime.date()
         last_date_start = last_datetime_start.date()
 
-        current_date_str = current_date.strftime('%Y-%m-%d')
-        last_date_str = last_date.strftime('%Y-%m-%d')
-        last_date_start_str = last_date_start.strftime('%Y-%m-%d')
-
-        last_sales = self.sold_items(time_period=[last_date_start, last_date])
-        current_sales = self.sold_items(time_period)
+        last_sales = self.sold_scrap_items(time_period=[last_date_start, last_date])[0]
+        current_sales = self.sold_scrap_items(time_period)[0]
 
         return current_sales - last_sales
 
@@ -144,14 +147,18 @@ Supplier: {product.supplier}
 ---------
 Qty in stock: {product.qty}
 -------------
-Sold(7 days): {product.sold_items(7)}
+Sold(7 days): {product.sold_scrap_items(7)[0]}
 -------------
-Sold(30 days): {product.sold_items(30)}
+Sold(30 days): {product.sold_scrap_items(30)[0]}
 --------------
 + / - (7 days): {product.compare_sales(7)}
 ---------------
 + / - (30 days): {product.compare_sales(30)}
 ----------------
+Scrap(7 days): {product.sold_scrap_items(7)[1]}
+--------------
+Scrap(30 days): {product.sold_scrap_items(30)[1]}
+---------------
 """
     )
 
