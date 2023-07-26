@@ -4,6 +4,7 @@ import re
 from setup import *
 
 def update_stock(sales=None, scraps=None, inventory_list=None):
+    print_output.print_loading('update_stock')
     cols = 'ABCDEF'
 
     def update_qty(list_to_use):
@@ -14,8 +15,8 @@ def update_stock(sales=None, scraps=None, inventory_list=None):
             index = cols[cell.col - 2]
             stock_worksheet.update(f'{index}{cell.row}', int(qty_cell.value) - int(product[1]))
     
-    if sales != None: print(sales)
-    if scraps != None: print(sales)
+    if sales != None: update_qty(sales)
+    if scraps != None: update_qty(scraps)
 
     if inventory_list != None:
         for product in inventory_list:
@@ -23,35 +24,55 @@ def update_stock(sales=None, scraps=None, inventory_list=None):
 
             index = cols[cell.col - 2]
             stock_worksheet.update(f'{index}{cell.row}', int(product[1]))
+    
 
 #Worksheet.update(value = [[]], range_name=)' arguments 'range_name' and 'values' will swap, values will be mandatory of type: 'list(list(...))'
 
 def update():
-    sales = sales_worksheet.get_all_values()[1:]
-    scraps = scrap_worksheet.get_all_values()[1:]
+    confirm = input('Are you sure you want to update? This means overwriting your current stock and history data. (y/n)')
 
-    update_stock(sales=sales, scraps=scraps)
+    if confirm == 'y':
+        sales = sales_worksheet.get_all_values()[1:]
+        scraps = scrap_worksheet.get_all_values()[1:]
 
-    for item in sales:
-        item[1] = int(item[1])
+        update_stock(sales=sales, scraps=scraps)
+
+        for item in sales:
+            item[1] = int(item[1])
+        
+        for item in scraps:
+            item[1] = int(item[1])
+
+        data = {
+            "date" : str(datetime.now().date()),
+            "sold" : sales,
+            "scrap" : scraps
+        }
+
+        sales_history.append(data)
+
+        print_output.print_loading('update_history')
+        with open('sales_history.json', 'w') as json_file:
+            json.dump(sales_history, json_file)
     
-    for item in scraps:
-        item[1] = int(item[1])
-
-    data = {
-        "date" : str(datetime.now().date()),
-        "sold" : sales,
-        "scrap" : scraps
-    }
-
-    sales_history.append(data)
-
-    with open('test_history.json', 'w') as json_file:
-        json.dump(sales_history, json_file)
+    elif confirm == 'n':
+        return
+    else:
+        update()
+    
+    reload_data()
 
 def updateinv():
-    inventory = inv_worksheet.get_all_values()[1:]
-    update_stock(inventory_list=inventory)
+    confirm = input('Are you sure you want to update? This means overwriting your current stock and history data. (y/n)')
+    if confirm == 'y':
+        inventory = inv_worksheet.get_all_values()[1:]
+        update_stock(inventory_list=inventory)
+    elif confirm == 'n':
+        return
+    else:
+        updateinv()
+    
+    reload_data()
 
 def priceof(gtin):
     product = Product(gtin)
@@ -74,7 +95,7 @@ def scrap():
 
         qty = input('Enter quantity: ')
 
-        to_scrap.append([gtin, qty])
+        to_scrap.append([gtin, int(qty)])
     
     for row in to_scrap:
         scrap_worksheet.append_row(row)
@@ -92,15 +113,15 @@ def execute_cmd(command):
             update()
         elif 'updateinv' == command:
             updateinv()
-        elif 'priceof' == command:
+        elif 'priceof' in command:
             priceof(gtin())
-        elif 'instock' == command:
+        elif 'instock' in command:
             instock(gtin())
-        elif 'dataof' == command:
+        elif 'dataof' in command:
             dataof(gtin())
         elif 'scrap' == command:
             scrap()
-        elif 'help' == command:
+        elif 'help' in command:
             pass
         elif 'exit' == command:
             exit()

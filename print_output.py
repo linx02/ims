@@ -1,20 +1,22 @@
 def print_main():
     print(
 """
-*----------------*
-|   YourStore    |
-|     IMS        |
-*----------------*
-| Commands:      |
-|                |
-| updatesales    |
-| updateinv      |
-| priceof [GTIN] |
-| instock [GTIN] |
-| dataof [GTIN]  |
-| scrap          |
-| help [COMMAND] |
-*----------------*
+*-------------------*
+|     YourStore     |
+|        IMS        |
+*-------------------*
+| Commands:         |
+|                   |
+| 1. update         |
+| 2. updateinv      |
+| 3. priceof [GTIN] |
+| 4. instock [GTIN] |
+| 5. dataof [GTIN]  |
+| 6. scrap          |
+| 7. help [COMMAND] |
+*-------------------*
+Use either assigned numbers or command names e.g:
+3 [GTIN] or priceof [GTIN]
 """
 )
 
@@ -46,3 +48,22 @@ def print_dataof(product):
     ---------------
     """
         )
+    
+def print_loading(index):
+    
+    match index:
+        case 'load_api':
+            print('Connecting to google api...')
+        case 'load_stock':
+            print('Loading stock data...')
+        case 'load_history':
+            print('Loading history data...')
+        case 'update_stock':
+            print('Updating stock data...')
+        case 'update_history':
+            print('Updating history data...')
+        case 'reload_data':
+            print('Reloading data...')
+
+def print_help(command):
+    pass
