@@ -22,7 +22,19 @@ def dataof(gtin):
     print_output.print_dataof(product)
 
 def scrap():
-    pass
+    to_scrap = []
+    while True:
+        gtin = input('Enter product gtin to scrap: ')
+
+        if "apply" in gtin: break
+
+        qty = input('Enter quantity: ')
+
+        to_scrap.append([gtin, qty])
+    
+    for row in to_scrap:
+        scrap_worksheet.append_row(row)
+
 
 def help(command):
     pass
@@ -43,7 +55,7 @@ def execute_cmd(command):
         elif 'dataof' in command:
             dataof(gtin())
         elif 'scrap' in command:
-            pass
+            scrap()
         elif 'help' in command:
             pass
         elif 'exit' in command:

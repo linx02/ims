@@ -12,6 +12,8 @@ CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('stock')
+sales_worksheet = SHEET.worksheet('today_sales')
+scrap_worksheet = SHEET.worksheet('today_scrap')
 
 # Load stock data
 stock = SHEET.worksheet('full_stock')
