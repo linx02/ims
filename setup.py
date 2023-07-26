@@ -15,6 +15,7 @@ SHEET = GSPREAD_CLIENT.open('stock')
 stock_worksheet = SHEET.worksheet('full_stock')
 sales_worksheet = SHEET.worksheet('today_sales')
 scrap_worksheet = SHEET.worksheet('today_scrap')
+inv_worksheet = SHEET.worksheet('inventory')
 
 # Load stock data
 stock = SHEET.worksheet('full_stock')

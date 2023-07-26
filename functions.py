@@ -14,8 +14,15 @@ def update_stock(sales=None, scraps=None, inventory_list=None):
             index = cols[cell.col - 2]
             stock_worksheet.update(f'{index}{cell.row}', int(qty_cell.value) - int(product[1]))
     
-    if sales != None: update_qty(sales)
-    if scraps != None: update_qty(scraps)
+    if sales != None: print(sales)
+    if scraps != None: print(sales)
+
+    if inventory_list != None:
+        for product in inventory_list:
+            cell = stock_worksheet.find(product[0])
+
+            index = cols[cell.col - 2]
+            stock_worksheet.update(f'{index}{cell.row}', int(product[1]))
 
 #Worksheet.update(value = [[]], range_name=)' arguments 'range_name' and 'values' will swap, values will be mandatory of type: 'list(list(...))'
 
@@ -43,7 +50,8 @@ def update():
         json.dump(sales_history, json_file)
 
 def updateinv():
-    pass
+    inventory = inv_worksheet.get_all_values()[1:]
+    update_stock(inventory_list=inventory)
 
 def priceof(gtin):
     product = Product(gtin)
@@ -80,21 +88,21 @@ def execute_cmd(command):
     gtin = lambda: re.search(pattern, command).group()
 
     try:
-        if 'update' in command:
+        if 'update' == command:
             update()
-        elif 'updateinv' in command:
-            pass
-        elif 'priceof' in command:
+        elif 'updateinv' == command:
+            updateinv()
+        elif 'priceof' == command:
             priceof(gtin())
-        elif 'instock' in command:
+        elif 'instock' == command:
             instock(gtin())
-        elif 'dataof' in command:
+        elif 'dataof' == command:
             dataof(gtin())
-        elif 'scrap' in command:
+        elif 'scrap' == command:
             scrap()
-        elif 'help' in command:
+        elif 'help' == command:
             pass
-        elif 'exit' in command:
+        elif 'exit' == command:
             exit()
         else:
             print(f'No such command: "{command}"')
