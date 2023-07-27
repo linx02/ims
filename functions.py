@@ -102,7 +102,7 @@ def scrap():
 
 
 def help(command):
-    pass
+    print_output.print_help(command)
 
 def execute_cmd(command):
     pattern = r"\b\d+\b"
@@ -113,20 +113,24 @@ def execute_cmd(command):
             update()
         elif 'updateinv' == command:
             updateinv()
-        elif 'priceof' in command:
+        elif 'priceof' == command[:len('priceof')]:
+            command = 'priceof'
             priceof(gtin())
-        elif 'instock' in command:
+        elif 'instock' == command[:len('instock')]:
+            command = 'instock'
             instock(gtin())
-        elif 'dataof' in command:
+        elif 'dataof' == command[:len('dataof')]:
+            command = 'dataof'
             dataof(gtin())
         elif 'scrap' == command:
             scrap()
-        elif 'help' in command:
-            pass
+        elif 'help' == command[:len('help')]:
+            command = 'help'
+            help(command[5:])
         elif 'exit' == command:
             exit()
         else:
             print(f'No such command: "{command}"')
-    except SyntaxError as e:
+    except Exception as e:
         print(f'Invalid usage of ({command}): {e}\n')
         print(f'Please type "help {command}" to see correct usage.\n')
