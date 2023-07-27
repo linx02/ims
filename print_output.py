@@ -123,6 +123,9 @@ def print_error(error, row=None):
 
         case 'invalid_data':
             error = f'Invalid data on row: {row}'
+        
+        case 'gtin_not_exist':
+            error = f'no match for provided GTIN'
     
     print(f'ERROR: {error}')
 

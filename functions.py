@@ -1,7 +1,11 @@
 from product_model import *
 import print_output
-import re
 from setup import *
+
+def gtin_exists(gtin):
+    global stock_data
+    for row in stock_data:
+        if str(gtin) == row[-1]: return True
 
 def validate_data(*args):
     errors = False
@@ -71,7 +75,7 @@ def update():
     if sales_history[-1]["date"] == str(datetime.now().date()):
         confirm_overwrite = input('Todays date already exists in the sales history. Are you sure you want to overwrite it? (y/n) ')
 
-    if confirm == 'y':
+    if confirm == 'y' and confirm_overwrite == 'y':
 
         errors = validate_data('sales', 'scraps')
 
@@ -106,7 +110,7 @@ def update():
         with open('sales_history.json', 'w') as json_file:
             json.dump(sales_history, json_file)
     
-    elif confirm == 'n':
+    elif confirm == 'n' or confirm_overwrite == 'n':
         return
     else:
         update()
@@ -130,10 +134,16 @@ def updateinv():
     print_output.print_alert('stock_data')
 
 def priceof(gtin):
+    if not gtin_exists(gtin):
+        print_output.print_error('gtin_not_exist')
+        return
     product = Product(gtin)
     print(product.get('price'))
 
 def instock(gtin):
+    if not gtin_exists(gtin):
+        print_output.print_error('gtin_not_exist')
+        return
     product = Product(gtin)
     print(product.get('qty'))
 
@@ -165,32 +175,64 @@ def help(command):
 
 def execute_cmd(command):
     entire_command = command
-    pattern = r"\b\d+\b"
-    gtin = lambda: re.search(pattern, entire_command).group()
     
-    try:
-        if 'update' == command or '1' == command:
-            update()
-        elif 'updateinv' == command or '2' == command:
-            updateinv()
-        elif 'priceof' == command[:len('priceof')] or '3' == command[0]:
-            command = 'priceof'
-            priceof(gtin())
-        elif 'instock' == command[:len('instock')] or '4' == command[0]:
-            command = 'instock'
-            instock(gtin())
-        elif 'dataof' == command[:len('dataof')] or '5' == command[0]:
-            command = 'dataof'
-            dataof(gtin())
-        elif 'scrap' == command or '6' == command[0]:
-            scrap()
-        elif 'help' == command[:len('help')] or '7' == command[0]:
-            command = 'help'
-            help(entire_command.split()[-1])
-        elif 'exit' == command or '8' == command[0]:
-            exit()
+    command_list = ['update', 'updateinv', 'priceof', 'instock', 'dataof', 'scrap', 'help', 'exit', '1', '2', '3', '4', '5', '6', '7', '8']
+    takes_arg = ['priceof', 'instock', 'dataof', 'help']
+
+    command = command.split(" ")
+
+    if len(command[0]) < 1:
+        return
+    elif len(command) == 1:
+        command = command[0]
+        if command in takes_arg:
+            print(f'Invalid usage of ({command}): {command} requires additional parameter')
+            print(f'Please type "help {command}" to see correct usage.\n')
+            return
+    elif len(command) == 2:
+        if command[0] == 'help' or command[0] == '7':
+            if len(command[1]) > 1 and str(command[1]) in command_list:
+                help(command[1])
+                return
+            else:
+                print(f'Invalid usage of ({command[0]}): No such command: {command[1]}')
+                print(f'Please type "help {command[0]}" to see correct usage.\n')
+                return
+        try:
+            gtin = str(int(command[1]))
+            command = command[0]
+        except ValueError:
+            command = command[0]
+            print(f'Invalid usage of ({command}): GTIN must be numeric')
+            return
+    else:
+        gtin = command[1]
+        command = command[0]
+        if command in command_list:
+            print(f'Invalid usage of ({command}): {command} takes only 1 parameter')
+            print(f'Please type "help {command}" to see correct usage.\n')
         else:
-            print(f'No such command: "{command}"')
-    except Exception as e:
-        print(f'Invalid usage of ({command}): {e}\n')
-        print(f'Please type "help {command}" to see correct usage.\n')
+            print(f'No such command: {command}')
+            return
+    
+
+    if 'update' == command or '1' == command:
+        update()
+    elif 'updateinv' == command or '2' == command:
+        updateinv()
+    elif 'priceof' == command or '3' == command[0]:
+        command = 'priceof'
+        priceof(gtin)
+    elif 'instock' == command or '4' == command[0]:
+        command = 'instock'
+        instock(gtin)
+    elif 'dataof' == command or '5' == command[0]:
+        command = 'dataof'
+        dataof(gtin)
+    elif 'scrap' == command or '6' == command[0]:
+        scrap()
+    elif 'exit' == command or '8' == command[0]:
+        exit()
+    else:
+        print(f'No such command: "{command}"')
+        
