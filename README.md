@@ -1,32 +1,78 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Inventory Management System
 
-Welcome,
+Inventory Management System(IMS) is a terminal based inventory management system written using only python.
 
-This is the Code Institute student template for deploying your third portfolio project, the Python command-line project. The last update to this file was: **March 14, 2023**
+This app aims to provide a lightweight solution to inventory management for small business owners.
 
-## Reminders
+[Link to this project can be found here](https://inventorymanagementsystem-86826be60536.herokuapp.com/)
 
-- Your code must be placed in the `run.py` file
-- Your dependencies must be placed in the `requirements.txt` file
-- Do not edit any of the other files or your code may not deploy properly
+## How to use
 
-## Creating the Heroku app
+- Type in commands via terminal either using the command names or their numeric indexes followed by a product id number(GTIN) if necessary
 
-When you create the app, you will need to add two buildpacks from the _Settings_ tab. The ordering is as follows:
+- Data can also be accessed and edited via the google sheets link
 
-1. `heroku/python`
-2. `heroku/nodejs`
+## Features / Commands
 
-You must then create a _Config Var_ called `PORT`. Set this to `8000`
+- update
+    - Provides the user a way of updating and storing their inventory data.
+    - Reads the sales and scraps sheets, updates the stock sheet accordingly and stores the data in history.
+- updateinv
+    - Provides the user a way to update their inventory data, useful for e.g stocktaking.
+    - Reads the inventory sheet and updates the stock sheet accordingly.
+- priceof
+    - Provides the user a way to search the price of a product in stock, useful for customer questions.
+    - Searches the stock sheet for price info of given product id number(GTIN).
+    ![Priceof command](media/priceof.png)
+- instock
+    - Provides the user a way to search the quantity of a product in stock, useful for customer questions.
+    - Searches the stock sheet for quantity info of given product id number(GTIN).
+    ![Instock command](media/instock.png)
+- dataof
+    - Provides the user a way to get an overview of a products data aswell as insightful statistics.
+    - Searches the stock sheet for data of a given product id number(GTIN), compares data in the history and provides statistics such as increase / decrease in sales.
+    ![Dataof command](media/dataof.png)
+- scrap
+    - Provides the user a way to add products to the scrap sheet, useful for e.g storeowners keeping track of stolen/broken items.
+    - Initiates a loop where user can enter product id number(GTIN) and quantity, then adds it to the scrap sheet.
+- help
+    - Provides the user a way to get instructions on how to use the different features.
+    - Prints info on how to use given command.
+    ![Help command](media/help.png)
+- exit
+    - Provides the user a way to exit the program.
+    - Terminates the script.
 
-If you have credentials, such as in the Love Sandwiches project, you must create another _Config Var_ called `CREDS` and paste the JSON into the value field.
+## Data model
 
-Connect your GitHub repository and deploy as normal.
+I decided to use a Product class as my model. When a product id number(GTIN) is searched, the script creates a new instance of the Product class to hold the products information.
 
-## Constraints
+The Product class stores the products selling price, buying price, supplier name, quantity and gtin number.
 
-The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
+The class also has methods to help other features, such as a get method which returns the wanted data in a nicer format for the user. A sold_scrap_items method which returns the total sales/scraps of a given time period from the history data, aswell as a compare_sales method which compares the sales of a given time period to the same time period the previous year.
 
----
+## Testing
 
-Happy coding!
+- Given invalid inputs such as strings where numbers are expected and out of bound inputs.
+- Tested in my local terminal and the Code Institute Heroku terminal.
+
+## Bugs
+
+## Validators
+
+## Deployment
+
+This project was deployed using Code Institute's mock terminal for Heroku.
+
+- Steps for deployment:
+    - Fork or clone this repository
+    - Create a new Heroku app
+    - Set the buildpacks to Python and NodeJS in that order
+    - Link the Heroku app to the repository
+    - Click on Deploy
+
+## Credits
+
+- Code Institute for the deployment terminal
+- ChatGPT for generation of example product names and prices
+- Google for API's and third-party spreadsheet software
