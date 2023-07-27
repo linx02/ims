@@ -306,13 +306,17 @@ def execute_cmd(command):
             return
     elif len(command) == 2:
         if command[0] == 'help' or command[0] == '7':
-            if len(command[1]) > 1 and str(command[1]) in command_list:
+            if len(command[1]) > 0 and str(command[1]) in command_list:
                 help(command[1])
                 return
             else:
                 print(f'Invalid usage of ({command[0]}): No such command: {command[1]}')
                 print(f'Please type "help {command[0]}" to see correct usage.\n')
                 return
+        elif len(command[1]) > 0 and command[0] not in takes_arg:
+            print(f'Invalid usage of {command[0]}: {command[0]} takes only 1 parameter')
+            print(f'Please type "help {command[0]}" to see correct usage.\n')
+            return
         try:
             gtin = str(int(command[1]))
             command = command[0]
@@ -326,6 +330,7 @@ def execute_cmd(command):
         if command in command_list:
             print(f'Invalid usage of ({command}): {command} takes only 1 parameter')
             print(f'Please type "help {command}" to see correct usage.\n')
+            return
         else:
             print(f'No such command: {command}')
             return
