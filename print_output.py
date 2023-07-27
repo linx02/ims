@@ -67,6 +67,8 @@ def print_loading(index):
             print('Updating stock data...')
         case 'update_history':
             print('Updating history data...')
+        case 'update_sheet':
+            print('Updating sheet...')
 
 def print_help(command):
     
@@ -128,6 +130,3 @@ def print_error(error, row=None):
             error = f'no match for provided GTIN'
     
     print(f'ERROR: {error}')
-
-def print_scrap():
-    print('Add items to todays scrap list, type "apply" when done\n')

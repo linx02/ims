@@ -153,18 +153,26 @@ def dataof(gtin):
 
 def scrap():
     to_scrap = []
-    print_output.print_scrap()
+    print('Add items to todays scrap list\n')
     while True:
         gtin = input('Enter product gtin to scrap: ')
 
-        if "apply" in gtin: break
-
-        qty = input('Enter quantity: ')
-
-        try:
-            to_scrap.append([gtin, int(qty)])
-        except Exception as e:
-            pass
+        if gtin_exists(gtin):
+            qty = input('Enter quantity: ')
+            try: int(qty)
+            except ValueError:
+                print('Invalid input: Quantity must be numeric')
+                continue
+            to_scrap.append([gtin, qty])
+            if input('Add another product?(y/n) ') == 'y': continue
+            else: break
+        else:
+            try:
+                int(gtin)
+                print_output.print_error('gtin_not_exist')
+            except ValueError:
+                print('Invalid input: GTIN must be numeric')
+                continue
     
     for row in to_scrap:
         scrap_worksheet.append_row(row)
