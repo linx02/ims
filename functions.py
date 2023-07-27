@@ -42,16 +42,19 @@ def update_stock(sales=None, scraps=None, inventory_list=None):
             qty_cell = stock_worksheet.cell(cell.row, cell.col - 1)
 
             index = cols[cell.col - 2]
-            stock_worksheet.update(f'{index}{cell.row}', int(qty_cell.value) - int(product[1]))
+            try:
+                stock_worksheet.update(f'{index}{cell.row}', int(qty_cell.value) - int(product[1]))
+            except Exception as e:
+                print_output.print_error('invalid_data', cell.row)
+                print('Please resolve errors before updating')
+                return True
     
-    if sales != None: update_qty(sales)
-    if scraps != None: update_qty(scraps)
+    if sales != None: errors = update_qty(sales)
+    if errors: return True
+    if scraps != None: errors = update_qty(scraps)
+    if errors: return True
 
     if inventory_list != None:
-        errors = validate_data('inventory')
-        if errors:
-            print('Please resolve errors before updating stock')
-            return
         for product in inventory_list:
             cell = stock_worksheet.find(product[0])
 
@@ -79,7 +82,8 @@ def update():
         sales = sales_worksheet.get_all_values()[1:]
         scraps = scrap_worksheet.get_all_values()[1:]
 
-        update_stock(sales=sales, scraps=scraps)
+        errors = update_stock(sales=sales, scraps=scraps)
+        if errors: return
 
         for item in sales:
             item[1] = int(item[1])
@@ -112,6 +116,10 @@ def update():
 def updateinv():
     confirm = input('Are you sure you want to update? This means overwriting your current stock and history data. (y/n)')
     if confirm == 'y':
+        errors = validate_data('inventory')
+        if errors:
+            print('Please resolve errors before updating stock')
+            return
         inventory = inv_worksheet.get_all_values()[1:]
         update_stock(inventory_list=inventory)
     elif confirm == 'n':
@@ -135,6 +143,7 @@ def dataof(gtin):
 
 def scrap():
     to_scrap = []
+    print_output.print_scrap()
     while True:
         gtin = input('Enter product gtin to scrap: ')
 
