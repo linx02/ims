@@ -250,7 +250,7 @@ def scrap():
             try: int(qty) # Validate input
             except ValueError:
                 print('Invalid input: Quantity must be numeric')
-                continue
+                break
             to_scrap.append([gtin, qty])
             if input('Add another product?(y/n) ') == 'y': continue
             else: break
@@ -258,9 +258,10 @@ def scrap():
             try:
                 int(gtin)
                 print_output.print_error('gtin_not_exist')
+                break
             except ValueError:
                 print('Invalid input: GTIN must be numeric')
-                continue
+                break
     
     for row in to_scrap:
         scrap_worksheet.append_row(row) # Add to scrap worksheet
@@ -295,6 +296,13 @@ def execute_cmd(command):
 
     command = command.split(" ") # Split input into list [command, gtin/command]
 
+    # Clear list of whitespace
+    cleared_command = []
+    for item in command:
+        if len(item.strip()) > 0:
+            cleared_command.append(item)
+    command = cleared_command
+
     # Validate input
     if len(command[0]) < 1:
         return
@@ -306,7 +314,7 @@ def execute_cmd(command):
             return
     elif len(command) == 2:
         if command[0] == 'help' or command[0] == '7':
-            if len(command[1]) > 0 and str(command[1]) in command_list:
+            if len(command[1]) > 0 and str(command[1]) in command_list and command[1].isdigit() == False:
                 help(command[1])
                 return
             else:
