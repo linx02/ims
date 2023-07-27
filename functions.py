@@ -6,8 +6,6 @@ def gtin_exists(gtin):
     """
     Check if a GTIN (Global Trade Item Number) exists in the stock data.
 
-    This function iterates through the global variable 'stock_data', and checks if the given GTIN matches the last element of any row.
-
     Args:
         gtin (str or int): The GTIN to check for existence in the stock data.
 
@@ -22,30 +20,26 @@ def validate_data(*args):
     """
     Validate data from one or more worksheets.
 
-    This function takes one or more worksheets as input and performs data validation on each worksheet. The validation checks include:
-    - Checking the number of columns in each row. Rows with more than three columns are considered invalid.
-    - Verifying if the first element of each row (assumed to be a GTIN) exists in the list 'existing_gtins'.
-    - Attempting to convert the first and second elements of each row to integers. If this conversion fails, the row is considered invalid.
-
     Args:
-        *args (gspread.Worksheet): One or more gspread Worksheet objects representing the worksheets to validate.
+        *args (str): Worksheet names to validate. Use 'sales', 'scraps', or 'inventory' to specify the worksheets.
 
     Returns:
-        None: The function does not return any value. It prints validation errors to the console using 'print_output.print_error'.
+        bool: True if there are any validation errors, False otherwise.
     """
+
     errors = False
     def validate(worksheet):
         nonlocal errors
-        for row_index, item in enumerate(worksheet):
-            if len(item) > 3:
+        for row_index, item in enumerate(worksheet): # Loop through worksheet
+            if len(item) > 3: # Check only GTIN and qty columns are filled
                 print_output.print_error('invalid_data', row=row_index + 1)
                 errors = True
                 continue
-            if gtin_exists(item[0]):
+            if not gtin_exists(item[0]): # Check gtin exists
                 print_output.print_error('invalid_data', row=row_index + 1)
                 errors = True
                 continue
-            try:
+            try: # Check cell data are of type int
                 int(item[0])
                 int(item[1])
             except Exception as e:
@@ -61,18 +55,38 @@ def validate_data(*args):
 
 
 def update_stock(sales=None, scraps=None, inventory_list=None):
+    """
+    Update stock quantities based on sales, scraps, and inventory lists.
+
+    Args:
+        sales (list of lists, optional): A list of lists representing the sales data, list items should contain GTIN and quantity sold.
+        scraps (list of lists, optional): A list of lists representing the scraps data, list items should contain GTIN and quantity of scraps.
+        inventory_list (list of lists, optional): A list of lists representing the inventory data, list items should contain GTIN and the quantity to update in stock.
+
+    Returns:
+        bool: True if there are any errors during the update, False otherwise.
+    """
     print_output.print_loading('update_stock')
 
-    cols = 'ABCDEF'
+    cols = 'ABCDEF' # Define column indexes for use with sheet.update()
 
     def update_qty(list_to_use):
-        for product in list_to_use:
-            cell = stock_worksheet.find(product[0])
-            qty_cell = stock_worksheet.cell(cell.row, cell.col - 1)
+        """
+        Update stock quantities based on the provided list.
 
-            index = cols[cell.col - 2]
+        Args:
+            list_to_use (list of lists): A list of lists representing sales or scraps data, list items should contain GTIN and quantity.
+
+        Returns:
+            bool: True if there are any errors during the update, False otherwise.
+        """
+        for product in list_to_use:
+            cell = stock_worksheet.find(product[0]) # Find cell of product with correct gtin
+            qty_cell = stock_worksheet.cell(cell.row, cell.col - 1) # Cell of qty for same gtin
+
+            index = cols[cell.col - 2] # Define column index to use
             try:
-                stock_worksheet.update(f'{index}{cell.row}', int(qty_cell.value) - int(product[1]))
+                stock_worksheet.update(f'{index}{cell.row}', int(qty_cell.value) - int(product[1])) # Subtract sales and update the sheet
             except Exception as e:
                 print_output.print_error('invalid_data', cell.row)
                 print('Please resolve errors before updating')
@@ -90,38 +104,47 @@ def update_stock(sales=None, scraps=None, inventory_list=None):
             cell = stock_worksheet.find(product[0])
 
             index = cols[cell.col - 2]
-            stock_worksheet.update(f'{index}{cell.row}', int(product[1]))
+            stock_worksheet.update(f'{index}{cell.row}', int(product[1])) # Update sheet without subtraction for updateinv
 
 
 def update():
-    confirm = input('Are you sure you want to update? This means overwriting your current stock and history data. (y/n) ')
+    """
+    Update stock data and sales history.
+
+    Returns:
+        None: The function does not return any value.
+    """
+    
+    confirm = input('Are you sure you want to update?\nThis means overwriting your current stock and history data. (y/n) ')
 
     if confirm != 'y': return
 
-    if sales_history[-1]["date"] == str(datetime.now().date()):
-        confirm_overwrite = input('Todays date already exists in the sales history. Are you sure you want to overwrite it? (y/n) ')
+    if sales_history[-1]["date"] == str(datetime.now().date()): # Check if date already in history data
+        confirm_overwrite = input('Todays date already exists in the sales history.\nAre you sure you want to overwrite it? (y/n) ')
         if confirm_overwrite != 'y': return
 
     if confirm == 'y':
 
         errors = validate_data('sales', 'scraps')
 
-        if errors:
+        if errors: # Abort if data invalid
             print('Please resolve errors before updating data')
             return
 
         sales = sales_worksheet.get_all_values()[1:]
         scraps = scrap_worksheet.get_all_values()[1:]
 
-        errors = update_stock(sales=sales, scraps=scraps)
+        errors = update_stock(sales=sales, scraps=scraps) # Update stock
         if errors: return
 
+        # Make all values integers
         for item in sales:
             item[1] = int(item[1])
         
         for item in scraps:
             item[1] = int(item[1])
 
+        # Define data structure to be appended
         data = {
             "date" : str(datetime.now().date()),
             "sold" : sales,
@@ -134,31 +157,44 @@ def update():
             sales_history.append(data)
 
         print_output.print_loading('update_history')
+
+        # Save data in history
         with open('sales_history.json', 'w') as json_file:
             json.dump(sales_history, json_file)
     
-    else:
-        update()
     
     print_output.print_alert('stock_data')
 
 def updateinv():
+    """
+    Update stock data with inventory information.
+
+    Returns:
+        None: The function does not return any value.
+    """
     confirm = input('Are you sure you want to update? This means overwriting your current stock data. (y/n) ')
     if confirm == 'y':
         errors = validate_data('inventory')
-        if errors:
+        if errors: # Abort if invalid data
             print('Please resolve errors before updating stock')
             return
         inventory = inv_worksheet.get_all_values()[1:]
-        update_stock(inventory_list=inventory)
-    elif confirm == 'n':
-        return
+        update_stock(inventory_list=inventory) # Update stock
     else:
-        updateinv()
+        return
     
     print_output.print_alert('stock_data')
 
 def priceof(gtin):
+    """
+    Get the price of a product with the given GTIN.
+
+    Args:
+        gtin (str or int): The GTIN of the product to get price of.
+
+    Returns:
+        None: Prints price of product if the GTIN exists, otherwise returns None.
+    """
     if not gtin_exists(gtin):
         print_output.print_error('gtin_not_exist')
         return
@@ -166,6 +202,15 @@ def priceof(gtin):
     print(product.get('price'))
 
 def instock(gtin):
+    """
+    Check the stock quantity of a product with the given GTIN.
+
+    Args:
+        gtin (str or int): The GTIN of the product to check quantity of.
+
+    Returns:
+        None: Prints stock quantity of product if the GTIN exists, otherwise returns None.
+    """
     if not gtin_exists(gtin):
         print_output.print_error('gtin_not_exist')
         return
@@ -173,18 +218,36 @@ def instock(gtin):
     print(product.get('qty'))
 
 def dataof(gtin):
+    """
+    Print data and statistics of a product with the given GTIN.
+
+    Args:
+        gtin (str or int): The GTIN of the product to get data of.
+
+    Returns:
+        None: Prints data of the product if the GTIN exists, otherwise returns None.
+    """
+    if not gtin_exists(gtin):
+        print_output.print_error('gtin_not_exist')
+        return
     product = Product(gtin)
     print_output.print_dataof(product)
 
 def scrap():
+    """
+    Add items to the scrap list for the current day.
+
+    Returns:
+        None: The function does not return any value.
+    """
     to_scrap = []
     print('Add items to todays scrap list\n')
-    while True:
+    while True: # Initiate loop
         gtin = input('Enter product gtin to scrap: ')
 
         if gtin_exists(gtin):
             qty = input('Enter quantity: ')
-            try: int(qty)
+            try: int(qty) # Validate input
             except ValueError:
                 print('Invalid input: Quantity must be numeric')
                 continue
@@ -200,20 +263,39 @@ def scrap():
                 continue
     
     for row in to_scrap:
-        scrap_worksheet.append_row(row)
+        scrap_worksheet.append_row(row) # Add to scrap worksheet
 
 
 def help(command):
+    """
+    Display help information for a specific command.
+
+    Args:
+        command (str): The command for which help information is to be displayed.
+
+    Returns:
+        None: The function does not return any value.
+    """
     print_output.print_help(command)
 
 def execute_cmd(command):
-    entire_command = command
+    """
+    Execute a command based on user input.
+
+    Args:
+        command (str): The command entered by the user.
+
+    Returns:
+        None: The function does not return any value. It performs actions based on the provided command.
+    """
     
+    # Define allowed commands and those which require additional parameters
     command_list = ['update', 'updateinv', 'priceof', 'instock', 'dataof', 'scrap', 'help', 'exit', '1', '2', '3', '4', '5', '6', '7', '8']
     takes_arg = ['priceof', 'instock', 'dataof', 'help']
 
-    command = command.split(" ")
+    command = command.split(" ") # Split input into list [command, gtin/command]
 
+    # Validate input
     if len(command[0]) < 1:
         return
     elif len(command) == 1:
@@ -248,7 +330,7 @@ def execute_cmd(command):
             print(f'No such command: {command}')
             return
     
-
+    # Execute appropriate command
     if 'update' == command or '1' == command:
         update()
     elif 'updateinv' == command or '2' == command:
