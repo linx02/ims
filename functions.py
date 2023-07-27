@@ -3,11 +3,36 @@ import print_output
 from setup import *
 
 def gtin_exists(gtin):
+    """
+    Check if a GTIN (Global Trade Item Number) exists in the stock data.
+
+    This function iterates through the global variable 'stock_data', and checks if the given GTIN matches the last element of any row.
+
+    Args:
+        gtin (str or int): The GTIN to check for existence in the stock data.
+
+    Returns:
+        bool: True if the GTIN exists in the stock data, False otherwise.
+    """
     global stock_data
     for row in stock_data:
         if str(gtin) == row[-1]: return True
 
 def validate_data(*args):
+    """
+    Validate data from one or more worksheets.
+
+    This function takes one or more worksheets as input and performs data validation on each worksheet. The validation checks include:
+    - Checking the number of columns in each row. Rows with more than three columns are considered invalid.
+    - Verifying if the first element of each row (assumed to be a GTIN) exists in the list 'existing_gtins'.
+    - Attempting to convert the first and second elements of each row to integers. If this conversion fails, the row is considered invalid.
+
+    Args:
+        *args (gspread.Worksheet): One or more gspread Worksheet objects representing the worksheets to validate.
+
+    Returns:
+        None: The function does not return any value. It prints validation errors to the console using 'print_output.print_error'.
+    """
     errors = False
     def validate(worksheet):
         nonlocal errors
@@ -16,7 +41,7 @@ def validate_data(*args):
                 print_output.print_error('invalid_data', row=row_index + 1)
                 errors = True
                 continue
-            if item[0] not in existing_gtins:
+            if gtin_exists(item[0]):
                 print_output.print_error('invalid_data', row=row_index + 1)
                 errors = True
                 continue
@@ -53,10 +78,12 @@ def update_stock(sales=None, scraps=None, inventory_list=None):
                 print('Please resolve errors before updating')
                 return True
     
-    if sales != None: errors = update_qty(sales)
-    if errors: return True
-    if scraps != None: errors = update_qty(scraps)
-    if errors: return True
+    if sales != None:
+        errors = update_qty(sales)
+        if errors: return True
+    if scraps != None:
+        errors = update_qty(scraps)
+        if errors: return True
 
     if inventory_list != None:
         for product in inventory_list:
@@ -64,18 +91,18 @@ def update_stock(sales=None, scraps=None, inventory_list=None):
 
             index = cols[cell.col - 2]
             stock_worksheet.update(f'{index}{cell.row}', int(product[1]))
-    
 
-#Worksheet.update(value = [[]], range_name=)' arguments 'range_name' and 'values' will swap, values will be mandatory of type: 'list(list(...))'
 
 def update():
     confirm = input('Are you sure you want to update? This means overwriting your current stock and history data. (y/n) ')
-    confirm_overwrite = 'n'
+
+    if confirm != 'y': return
 
     if sales_history[-1]["date"] == str(datetime.now().date()):
         confirm_overwrite = input('Todays date already exists in the sales history. Are you sure you want to overwrite it? (y/n) ')
+        if confirm_overwrite != 'y': return
 
-    if confirm == 'y' and confirm_overwrite == 'y':
+    if confirm == 'y':
 
         errors = validate_data('sales', 'scraps')
 
@@ -110,15 +137,13 @@ def update():
         with open('sales_history.json', 'w') as json_file:
             json.dump(sales_history, json_file)
     
-    elif confirm == 'n' or confirm_overwrite == 'n':
-        return
     else:
         update()
     
     print_output.print_alert('stock_data')
 
 def updateinv():
-    confirm = input('Are you sure you want to update? This means overwriting your current stock and history data. (y/n) ')
+    confirm = input('Are you sure you want to update? This means overwriting your current stock data. (y/n) ')
     if confirm == 'y':
         errors = validate_data('inventory')
         if errors:
