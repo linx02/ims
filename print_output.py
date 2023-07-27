@@ -1,6 +1,12 @@
 sheet_link = 'https://docs.google.com/spreadsheets/d/18bCl8msVtXFvZ-By8N3ii_aQ5sm7WmIU6qxiguk63yA/edit?usp=sharing'
 
 def print_main():
+    """
+    Print the main menu.
+
+    Returns:
+        None: The function prints the main menu to the console.
+    """
     print(
 f"""
 *-------------------*
@@ -26,6 +32,15 @@ Link to worksheets: {sheet_link}
 )
 
 def print_dataof(product):
+    """
+    Print info and statistics about a product.
+
+    Args:
+        product (Product): Product object containing info about the product.
+
+    Returns:
+        None: The function prints product info.
+    """
     
     print(
     f"""
@@ -55,6 +70,15 @@ def print_dataof(product):
         )
     
 def print_loading(index):
+    """
+    Print loading messages based on the provided index.
+
+    Args:
+        index (str): The index of the loading task.
+
+    Returns:
+        None: The function prints the loading message.
+    """
     
     match index:
         case 'load_api':
@@ -71,6 +95,15 @@ def print_loading(index):
             print('Updating sheet...')
 
 def print_help(command):
+    """
+    Print help information for different commands.
+
+    Args:
+        command (str): The command for which help info is requested.
+
+    Returns:
+        None: The function prints help info.
+    """
     
     match command:
 
@@ -113,6 +146,15 @@ def print_help(command):
     print(f'Usage: "{usage[0]}" or "{usage[1]}"')
 
 def print_alert(alert):
+    """
+    Print alert message based on provided alert type.
+
+    Args:
+        alert (str): The type of alert to display.
+
+    Returns:
+        None: The function prints an alert message.
+    """
     match alert:
 
         case 'stock_data':
@@ -121,6 +163,16 @@ def print_alert(alert):
     print(f'ALERT: {alert}')
 
 def print_error(error, row=None):
+    """
+    Print error message based on the provided error type.
+
+    Args:
+        error (str): The type of error to be displayed.
+        row (int, optional): Row number associated with the error.
+
+    Returns:
+        None: The function prints an error message.
+    """
     match error:
 
         case 'invalid_data':
