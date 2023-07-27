@@ -33,12 +33,7 @@ print_output.print_loading('load_history')
 with open('sales_history.json', 'r') as f:
     sales_history = json.load(f)
 
-def reload_data():
-    global stock
-    global stock_data
-    
-    loaded_data = stock.get_all_values()
-    stock_data = loaded_data
-
+def reload_history_data():
+    global sales_history
     with open('sales_history.json', 'r') as f:
         sales_history = json.load(f)

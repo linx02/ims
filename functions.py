@@ -92,8 +92,9 @@ def update():
             "sold" : sales,
             "scrap" : scraps
         }
+
         if confirm_overwrite == 'y':
-            sales_history[-1] == data
+            sales_history[-1] = data
         else:
             sales_history.append(data)
 
@@ -176,7 +177,7 @@ def execute_cmd(command):
             scrap()
         elif 'help' == command[:len('help')]:
             command = 'help'
-            help(command[5:])
+            help(entire_command[5:])
         elif 'exit' == command:
             exit()
         else:
