@@ -114,7 +114,7 @@ def update():
     print_output.print_alert('stock_data')
 
 def updateinv():
-    confirm = input('Are you sure you want to update? This means overwriting your current stock and history data. (y/n)')
+    confirm = input('Are you sure you want to update? This means overwriting your current stock and history data. (y/n) ')
     if confirm == 'y':
         errors = validate_data('inventory')
         if errors:
@@ -169,25 +169,25 @@ def execute_cmd(command):
     gtin = lambda: re.search(pattern, entire_command).group()
     
     try:
-        if 'update' == command:
+        if 'update' == command or '1' == command:
             update()
-        elif 'updateinv' == command:
+        elif 'updateinv' == command or '2' == command:
             updateinv()
-        elif 'priceof' == command[:len('priceof')]:
+        elif 'priceof' == command[:len('priceof')] or '3' == command[0]:
             command = 'priceof'
             priceof(gtin())
-        elif 'instock' == command[:len('instock')]:
+        elif 'instock' == command[:len('instock')] or '4' == command[0]:
             command = 'instock'
             instock(gtin())
-        elif 'dataof' == command[:len('dataof')]:
+        elif 'dataof' == command[:len('dataof')] or '5' == command[0]:
             command = 'dataof'
             dataof(gtin())
-        elif 'scrap' == command:
+        elif 'scrap' == command or '6' == command[0]:
             scrap()
-        elif 'help' == command[:len('help')]:
+        elif 'help' == command[:len('help')] or '7' == command[0]:
             command = 'help'
-            help(entire_command[5:])
-        elif 'exit' == command:
+            help(entire_command.split()[-1])
+        elif 'exit' == command or '8' == command[0]:
             exit()
         else:
             print(f'No such command: "{command}"')
