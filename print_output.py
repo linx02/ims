@@ -1,6 +1,8 @@
+sheet_link = 'https://docs.google.com/spreadsheets/d/18bCl8msVtXFvZ-By8N3ii_aQ5sm7WmIU6qxiguk63yA/edit?usp=sharing'
+
 def print_main():
     print(
-"""
+f"""
 *-------------------*
 |     YourStore     |
 |        IMS        |
@@ -18,6 +20,8 @@ def print_main():
 *-------------------*
 Use either assigned numbers or command names e.g:
 3 [GTIN] or priceof [GTIN]
+
+Link to worksheets: {sheet_link}
 """
 )
 
