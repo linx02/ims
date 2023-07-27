@@ -49,9 +49,11 @@ class Product:
         for date in date_list:
             for item in sales_history:
                 if item["date"] == str(date):
-                    for sold, scrap in zip(item["sold"], item["scrap"]):
+                    for sold in item["sold"]:
                         if sold[0] == self.gtin:
                             sold_items.append(sold)
+                        
+                    for scrap in item["scrap"]:
                         if scrap[0] == self.gtin:
                             scrap_items.append(scrap)
         

@@ -5,6 +5,7 @@ from setup import *
 
 def update_stock(sales=None, scraps=None, inventory_list=None):
     print_output.print_loading('update_stock')
+
     cols = 'ABCDEF'
 
     def update_qty(list_to_use):
@@ -105,9 +106,10 @@ def help(command):
     print_output.print_help(command)
 
 def execute_cmd(command):
+    entire_command = command
     pattern = r"\b\d+\b"
-    gtin = lambda: re.search(pattern, command).group()
-
+    gtin = lambda: re.search(pattern, entire_command).group()
+    
     try:
         if 'update' == command:
             update()
@@ -131,6 +133,6 @@ def execute_cmd(command):
             exit()
         else:
             print(f'No such command: "{command}"')
-    except Exception as e:
+    except SyntaxError as e:
         print(f'Invalid usage of ({command}): {e}\n')
         print(f'Please type "help {command}" to see correct usage.\n')
