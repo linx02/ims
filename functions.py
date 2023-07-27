@@ -30,7 +30,11 @@ def update_stock(sales=None, scraps=None, inventory_list=None):
 #Worksheet.update(value = [[]], range_name=)' arguments 'range_name' and 'values' will swap, values will be mandatory of type: 'list(list(...))'
 
 def update():
-    confirm = input('Are you sure you want to update? This means overwriting your current stock and history data. (y/n)')
+    confirm = input('Are you sure you want to update? This means overwriting your current stock and history data. (y/n) ')
+    confirm_overwrite = 'n'
+
+    if sales_history[-1]["date"] == str(datetime.now().date()):
+        confirm_overwrite = input('Todays date already exists in the sales history. Are you sure you want to overwrite it? (y/n) ')
 
     if confirm == 'y':
         sales = sales_worksheet.get_all_values()[1:]
@@ -49,8 +53,10 @@ def update():
             "sold" : sales,
             "scrap" : scraps
         }
-
-        sales_history.append(data)
+        if confirm_overwrite == 'y':
+            sales_history[-1] == data
+        else:
+            sales_history.append(data)
 
         print_output.print_loading('update_history')
         with open('sales_history.json', 'w') as json_file:
@@ -61,7 +67,7 @@ def update():
     else:
         update()
     
-    reload_data()
+    print_output.print_alert('stock_data')
 
 def updateinv():
     confirm = input('Are you sure you want to update? This means overwriting your current stock and history data. (y/n)')
@@ -73,7 +79,7 @@ def updateinv():
     else:
         updateinv()
     
-    reload_data()
+    print_output.print_alert('stock_data')
 
 def priceof(gtin):
     product = Product(gtin)

@@ -107,3 +107,11 @@ def print_help(command):
     print(f'Purpose: {purpose}')
     print(f'Description: {description}')
     print(f'Usage: "{usage[0]}" or "{usage[1]}"')
+
+def print_alert(alert):
+    match alert:
+
+        case 'stock_data':
+            alert = 'Restart needed for stock data to be reloaded in system'
+
+    print(f'ALERT: {alert}')
