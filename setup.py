@@ -3,6 +3,7 @@ from google.oauth2.service_account import Credentials
 import gspread
 import print_output
 
+# Connect to google api
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
@@ -15,6 +16,8 @@ CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('stock')
+
+# Store specific worksheets
 stock_worksheet = SHEET.worksheet('full_stock')
 sales_worksheet = SHEET.worksheet('today_sales')
 scrap_worksheet = SHEET.worksheet('today_scrap')
