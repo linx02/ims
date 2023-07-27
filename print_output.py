@@ -115,3 +115,11 @@ def print_alert(alert):
             alert = 'Restart needed for stock data to be reloaded in system'
 
     print(f'ALERT: {alert}')
+
+def print_error(error, row=None):
+    match error:
+
+        case 'invalid_data':
+            error = f'Invalid data on row: {row}'
+    
+    print(f'ERROR: {error}')

@@ -3,6 +3,34 @@ import print_output
 import re
 from setup import *
 
+def validate_data(*args):
+    errors = False
+    def validate(worksheet):
+        nonlocal errors
+        for row_index, item in enumerate(worksheet):
+            if len(item) > 3:
+                print_output.print_error('invalid_data', row=row_index + 1)
+                errors = True
+                continue
+            if item[0] not in existing_gtins:
+                print_output.print_error('invalid_data', row=row_index + 1)
+                errors = True
+                continue
+            try:
+                int(item[0])
+                int(item[1])
+            except Exception as e:
+                print_output.print_error('invalid_data', row=row_index + 1)
+                errors = True
+        
+
+    if 'sales' in args: validate(sales_worksheet.get_all_values()[1:])
+    if 'scraps' in args: validate(scrap_worksheet.get_all_values()[1:])
+    if 'inventory' in args: validate(inv_worksheet.get_all_values()[1:])
+    
+    return errors
+
+
 def update_stock(sales=None, scraps=None, inventory_list=None):
     print_output.print_loading('update_stock')
 
@@ -20,6 +48,10 @@ def update_stock(sales=None, scraps=None, inventory_list=None):
     if scraps != None: update_qty(scraps)
 
     if inventory_list != None:
+        errors = validate_data('inventory')
+        if errors:
+            print('Please resolve errors before updating stock')
+            return
         for product in inventory_list:
             cell = stock_worksheet.find(product[0])
 
@@ -37,6 +69,13 @@ def update():
         confirm_overwrite = input('Todays date already exists in the sales history. Are you sure you want to overwrite it? (y/n) ')
 
     if confirm == 'y':
+
+        errors = validate_data('sales', 'scraps')
+
+        if errors:
+            print('Please resolve errors before updating data')
+            return
+
         sales = sales_worksheet.get_all_values()[1:]
         scraps = scrap_worksheet.get_all_values()[1:]
 
@@ -102,7 +141,10 @@ def scrap():
 
         qty = input('Enter quantity: ')
 
-        to_scrap.append([gtin, int(qty)])
+        try:
+            to_scrap.append([gtin, int(qty)])
+        except Exception as e:
+            pass
     
     for row in to_scrap:
         scrap_worksheet.append_row(row)
@@ -139,6 +181,6 @@ def execute_cmd(command):
             exit()
         else:
             print(f'No such command: "{command}"')
-    except SyntaxError as e:
+    except Exception as e:
         print(f'Invalid usage of ({command}): {e}\n')
         print(f'Please type "help {command}" to see correct usage.\n')

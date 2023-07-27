@@ -25,6 +25,7 @@ print_output.print_loading('load_stock')
 # Load stock data
 stock = SHEET.worksheet('full_stock')
 stock_data = stock.get_all_values()
+existing_gtins = [item[-1] for item in stock_data]
 
 print_output.print_loading('load_history')
 
