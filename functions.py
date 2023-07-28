@@ -352,15 +352,21 @@ def execute_cmd(command):
     command = cleared_command
 
     # Validate input
-    if len(command[0]) < 1:
+    if len(command) == 0 or len(command[0]) < 1:
         return
     elif len(command) == 1:
         command = command[0]
+        if len(command) > 1 and command.isdigit():
+            print(f'No such command: {command}')
+            return
         if command in takes_arg:
             print(f'Invalid usage of ({command}): {command} requires additional parameter')
             print(f'Please type "help {command}" to see correct usage.\n')
             return
     elif len(command) == 2:
+        if len(command[0]) > 0 and command[0].isdigit():
+            print(f'No such command: {command[0]}')
+            return
         if command[0] == 'help' or command[0] == '7':
             if len(command[1]) > 0 and str(command[1]) in command_list:
                 help(command[1])
@@ -396,7 +402,7 @@ def execute_cmd(command):
         update()
     elif 'updateinv' == command or '2' == command:
         updateinv()
-    elif 'priceof' == command or '3' == command[0]:
+    elif 'priceof' == command or ('3' == command[0] and len(command[0]) == 1):
         command = 'priceof'
         priceof(gtin)
     elif 'instock' == command or '4' == command[0]:
