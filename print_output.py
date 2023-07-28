@@ -1,5 +1,6 @@
 sheet_link = 'https://docs.google.com/spreadsheets/d/18bCl8msVtXFvZ-By8N3ii_aQ5sm7WmIU6qxiguk63yA/edit?usp=sharing'
 
+
 def print_main():
     """
     Print the main menu.
@@ -8,7 +9,7 @@ def print_main():
         None: The function prints the main menu to the console.
     """
     print(
-f"""
+        f"""
 *-------------------*
 |     YourStore     |
 |        IMS        |
@@ -29,7 +30,8 @@ Use either assigned numbers or command names e.g:
 
 Link to worksheets: {sheet_link}
 """
-)
+    )
+
 
 def print_dataof(product):
     """
@@ -41,9 +43,9 @@ def print_dataof(product):
     Returns:
         None: The function prints product info.
     """
-    
+
     print(
-    f"""
+        f"""
     Name: {product.name}
     -----
     Price: {product.price}
@@ -68,7 +70,8 @@ def print_dataof(product):
     ---------------
     """
         )
-    
+
+
 def print_loading(index):
     """
     Print loading messages based on the provided index.
@@ -79,7 +82,7 @@ def print_loading(index):
     Returns:
         None: The function prints the loading message.
     """
-    
+
     match index:
         case 'load_api':
             print('Connecting to google api...')
@@ -94,6 +97,7 @@ def print_loading(index):
         case 'update_sheet':
             print('Updating sheet...')
 
+
 def print_help(command):
     """
     Print help information for different commands.
@@ -104,7 +108,7 @@ def print_help(command):
     Returns:
         None: The function prints help info.
     """
-    
+
     match command:
 
         case 'update':
@@ -139,11 +143,12 @@ def print_help(command):
             purpose = 'Provide a way to exit/shutdown the system'
             description = 'Kills the script'
             usage = ['exit', '8']
-    
+
     print(f'Command: {command}')
     print(f'Purpose: {purpose}')
     print(f'Description: {description}')
     print(f'Usage: "{usage[0]}" or "{usage[1]}"')
+
 
 def print_alert(alert):
     """
@@ -162,6 +167,7 @@ def print_alert(alert):
 
     print(f'ALERT: {alert}')
 
+
 def print_error(error, row=None):
     """
     Print error message based on the provided error type.
@@ -177,8 +183,8 @@ def print_error(error, row=None):
 
         case 'invalid_data':
             error = f'Invalid data on row: {row}'
-        
+
         case 'gtin_not_exist':
             error = f'no match for provided GTIN'
-    
+
     print(f'ERROR: {error}')

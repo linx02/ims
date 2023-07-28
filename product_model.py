@@ -4,12 +4,14 @@ import setup
 stock_data = setup.stock_data
 sales_history = setup.sales_history
 
+
 class Product:
     """
     Class representing a product in stock.
 
     Args:
-        gtin (str): The (fictional)Global Trade Item Number (GTIN) of the product.
+        gtin (str):
+            The (fictional)Global Trade Item Number (GTIN) of the product.
 
     Attributes:
         name (str): Name of the product.
@@ -17,7 +19,8 @@ class Product:
         supplier_price (str): The supplier price / buying price of the product
         supplier (str): The name of the product's supplier.
         qty (str): The quantity of the product in stock.
-        gtin (str): The (fictional)Global Trade Item Number (GTIN) of the product.
+        gtin (str):
+            The (fictional)Global Trade Item Number (GTIN) of the product.
 
     Methods:
         get(info):
@@ -32,6 +35,7 @@ class Product:
     """
     global stock_data
     global sales_history
+
     def __init__(self, gtin):
         for product in stock_data:
             if gtin == product[-1]:
@@ -41,13 +45,15 @@ class Product:
                 self.supplier = product[3]
                 self.qty = product[4]
                 self.gtin = gtin
-    
+
     def get(self, info):
         """
         Get specific information about the product.
 
         Args:
-            info (str): The information to retrieve. Supported values: 'price', 'supplier_price', 'supplier', 'qty', 'gtin'.
+            info (str):
+                The information to retrieve.
+                Supported values: 'price', 'supplier_price', 'supplier', 'qty', 'gtin'.
 
         Returns:
             str: String representing the product information in format 'product_name: value'.
@@ -64,9 +70,9 @@ class Product:
             data = f'{self.qty}'
         if info == 'gtin':
             data = f'{self.gtin}'
-        
+
         return f'{self.name}: {data}'
-    
+
     def sold_scrap_items(self, time_period=None):
         """
         Get the total quantity of the product sold and scrapped within a specified time period.
@@ -100,22 +106,22 @@ class Product:
                     for sold in item["sold"]:
                         if sold[0] == self.gtin:
                             sold_items.append(sold)
-                        
+
                     for scrap in item["scrap"]:
                         if scrap[0] == self.gtin:
                             scrap_items.append(scrap)
-        
+
         # Calculate totals
         total_sold = 0
         for item in sold_items:
             total_sold += item[1]
-        
+
         total_scrap = 0
         for item in scrap_items:
             total_scrap += item[1]
-        
+
         return (total_sold, total_scrap)
-    
+
     def compare_sales(self, time_period):
         """
         Compare the sales of the product between the same time period this and last year.
@@ -137,3 +143,4 @@ class Product:
         current_sales = self.sold_scrap_items(time_period)[0]
 
         return current_sales - last_sales
+        

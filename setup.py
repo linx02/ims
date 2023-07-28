@@ -35,4 +35,3 @@ print_output.print_loading('load_history')
 # Load sales history data
 with open('sales_history.json', 'r') as f:
     sales_history = json.load(f)
-
