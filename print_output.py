@@ -111,35 +111,35 @@ def print_help(command):
 
     match command:
 
-        case 'update':
+        case 'update' | '1':
             purpose = 'Update the stores inventory data'
             description = 'Takes all data from sales and scraps sheets, subtracts the data from the stock sheet and adds the data to the sales history'
             usage = ['update', '1']
-        case 'updateinv':
+        case 'updateinv' | '2':
             purpose = 'Update the stores stock quantities from inventory list'
             description = 'Takes all data from inventory sheet and overwrites the appropriate quantities in the stock sheet'
             usage = ['updateinv', '2']
-        case 'priceof':
+        case 'priceof' | '3':
             purpose = 'Search prices of products in inventory'
             description = 'Gets the price of given product identifier(GTIN number) from stock sheet and prints it to the screen'
             usage = ['priceof [GTIN]', '3 [GTIN]']
-        case 'instock':
+        case 'instock' | '4':
             purpose = 'Check quantity of products in inventory'
             description = 'Gets the quantity of given product identifier(GTIN number) from stock sheet and prints it to the screen'
             usage = ['instock [GTIN]', '4 [GTIN]']
-        case 'dataof':
+        case 'dataof' | '5':
             purpose = 'Provide useful statistics and overviews of products in inventory'
             description = 'Gets all data of given product identifier(GTIN number) from stock sheet and prints it to the screen. Calculates increase/decrease in sales and scraps based on sales history data and prints it to the screen'
             usage = ['dataof [GTIN]', '5 [GTIN]']
-        case 'scrap':
+        case 'scrap' | '6':
             purpose = 'Allow for scrapping of products straight from the system'
             description = 'Initiates an infinite loop where user can enter product identifiers(GTIN numbers) and quantity to scrap. Adds the data to the scrap sheet'
             usage = ['scrap', '6']
-        case 'help':
+        case 'help' | '7':
             purpose = 'Provide instructions and context to commands in this system'
             description = 'Takes given command and prints appropriate purpose, description and usage of the command to the screen.'
             usage = ['help [COMMAND]', '7 [COMMAND]']
-        case 'exit':
+        case 'exit' | '8':
             purpose = 'Provide a way to exit/shutdown the system'
             description = 'Kills the script'
             usage = ['exit', '8']

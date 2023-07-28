@@ -362,7 +362,7 @@ def execute_cmd(command):
             return
     elif len(command) == 2:
         if command[0] == 'help' or command[0] == '7':
-            if len(command[1]) > 0 and str(command[1]) in command_list and command[1].isdigit() is False:
+            if len(command[1]) > 0 and str(command[1]) in command_list:
                 help(command[1])
                 return
             else:
