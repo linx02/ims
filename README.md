@@ -147,9 +147,9 @@ The class also has methods to help other features, such as a get method which re
         - Input: 'help 1'
         - Expected output: 'Invalid usage of (help): No such command: 1'
         - Actual output: 'Invalid usage of (help): No such command: 1'
-    8. exit
+    8. (Resolved)exit
         - Input: 'exit test'
-        - Expected output: 'Invalid usage of exit: exit takes only 1 parameter'
+        - Expected output: 'Invalid usage of exit: exit takes no parameters'
         - Actual output: 'Invalid usage of exit: exit takes only 1 parameter'
     
     - Input: 'test'
@@ -221,6 +221,8 @@ Bug in gspread lib?
     
     - setup.py
         - All clear, no errors found
+
+Errors left unresolved since fixing will distort the programs intended outputs and errors do not make an impact on the functionality.
 
 
 ## Deployment
