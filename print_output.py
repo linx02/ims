@@ -58,10 +58,10 @@ def print_dataof(product):
     -------------
     Sold(30 days): {product.sold_scrap_items(30)[0]}
     --------------
-    + / - (7 days): {product.compare_sales(7)}
-    ---------------
-    + / - (30 days): {product.compare_sales(30)}
-    ----------------
+    Change in sales (7 days): {product.compare_sales(7)}
+    -------------------------
+    Change in sales (30 days): {product.compare_sales(30)}
+    --------------------------
     Scrap(7 days): {product.sold_scrap_items(7)[1]}
     --------------
     Scrap(30 days): {product.sold_scrap_items(30)[1]}

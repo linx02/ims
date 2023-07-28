@@ -114,7 +114,7 @@ def update():
     Returns:
         None: The function does not return any value.
     """
-    
+    confirm_overwrite = 'n'
     confirm = input('Are you sure you want to update?\nThis means overwriting your current stock and history data. (y/n) ')
 
     if confirm != 'y': return
