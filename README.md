@@ -156,7 +156,7 @@ The class also has methods to help other features, such as a get method which re
     - Expected output: 'No such command: "test"'
     - Actual output: 'No such command: "test"'
 
-- Passed the code through a PEP8 linter and confirmed there are no important problems.
+- Passed the code through a [PEP8](https://pep8ci.herokuapp.com/) linter and confirmed there are no important problems.
 - Tested in my local terminal and the Code Institute Heroku terminal.
 
 ## Bugs
@@ -175,6 +175,7 @@ Unsolved deprecation warning from gspread:
 
 Tried updating gspread to latest version and using the correct syntax. Warning still shows. Positional keywords unexpected.
 Bug in gspread lib?
+
 ## Validators
 
 - PEP8
@@ -241,3 +242,20 @@ This project was deployed using Code Institute's mock terminal for Heroku.
 - Code Institute for the deployment terminal
 - ChatGPT for generation of example product names and prices
 - Google for API's and third-party spreadsheet software
+
+## Additional comments
+
+I developed this project with the SRP (Single Responsibility Principle) in mind.
+By decoupling the program into different scripts:
+    1. run.py
+        - Main function of the program
+    2. setup.py
+        - Loads necessary data and connects to api
+    3. functions.py
+        - All the necessary functions and actual logic for the program to run
+    4. product_model.py
+        - Holds the Product class with
+    5. print_output.py
+        - Seperates outputs and holds functions for loading, error and alert messages
+
+This helps the code stay tidy and easy to load mentally, and helps debugging allowing me to focus on individual parts of the code.
